@@ -51,11 +51,45 @@
 
     cv2.absdiff(src1, src2, dst=None)
 
-3_비트단위 AND, OR, XOR, NOT 연산
+비트단위 AND, OR, XOR, NOT 연산
 
-    cv2.bitwise_and(src1, src2, dst=None, mask=None)
-    cv2.bitwise_or(src1, src2, dst=None, mask=None)
-    cv2.bitwise_xor(src1, src2, dst=None, mask=None)
-    cv2.bitwise_not(src1, src2, dst=None, mask=None)
+    cv2.bitwise_and(src1, src2, dst=None, mask=None) # 모두가 값이 있어야 합쳐짐
+    cv2.bitwise_or(src1, src2, dst=None, mask=None) # 하나라도 값이 있으면 합쳐짐
+    cv2.bitwise_xor(src1, src2, dst=None, mask=None) # 값이 다르면 참, 같으면 거짓
+    cv2.bitwise_not(src1, src2, dst=None, mask=None) # 값을 반전시킴
   ✔ 각각의 픽셀값을 이진수로 표현하고 비트(bit)단위 논리 연산을 수행
   
+3_컬러 영상과 색 공간
+- 컬러 영상은 3차원 numpy.ndarray로 표현
+- img.shape = (h, w, 3)
+- opencv에서는 rgb 순서가 아니라 bgr 순서를 기본적으로 사용
+
+채널 분리
+    cv2.split(m, mv=None)
+    m: 다채널 영상으로 구성된 컬러 영상
+    mv: 출력 영상
+    dst: 출력 영상의 리스트
+
+채널 결합
+    cv2.merge(mv, dst=None)
+    mv: 입력 영상 리스트 또는 튜플
+    dst: 출력 영상
+
+4_히스토그램 분석
+
+히스토그램(Histogram)
+- 영상의 픽셀값 분포를 그래프의 형태로 표현한 것
+- 그레이스케일 영상에서 각 그레이스케일 값에 해당하는 픽셀의 개수를 구하고 막대 그래프의 형태로 표현
+
+정규화된 히스토그램(Normalized hihstogram)
+- 각 픽셀의 개수를 영상 전체 픽셀 개수로 나누어준 것
+- 해당 그레이스케일 값을 갖는 픽셀이 나타날 확률
+
+    cv2.calcHist(images, channels, mask, histSize, ranges, hist=None, accumulate=None)
+    images: 입력 영상 리스트
+    channels: 히스토그램을 구할 채널을 나타내는 리스트
+    mask: 마스크 영상, 입력 영상 전체에서 히스토그램을 구하려면 None 설정
+    histSize: 히스토그램 각 차원의 크기(bin의 개수)를 나타내는 리스트
+    ranges: 히스토그램 각 차원의 최소값과 최대값으로 구성된 리스트
+    hist: 계산된 히스토그램(numpy.ndarray)
+    accumulate: 기존의 hist 히스토그램에 누적하려면 True, 새로 만들려면 False
